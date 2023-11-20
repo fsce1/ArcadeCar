@@ -36,9 +36,9 @@ public class Headlights : MonoBehaviour
             foreach (Light l in lights) l.enabled = true;
         }
 
-        if (transform.localEulerAngles == tgt)
+        if (Vector3Int.RoundToInt(transform.localEulerAngles) != tgt)
         {
-            transform.localEulerAngles += Move(start, tgt, 1);
+            transform.localEulerAngles += Move(start, tgt, speed);
         }
     }
     private Vector3 Move(Vector3 start, Vector3 tgt, float secs)
@@ -47,6 +47,4 @@ public class Headlights : MonoBehaviour
         Vector3 move = diff * (secs / 50);
         return move;
     }
-
-
 }

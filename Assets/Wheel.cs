@@ -67,15 +67,16 @@ public class Wheel : MonoBehaviour
     void FixedUpdate()
     {
 
-        if (transform.up.y > 0 && Physics.Raycast(transform.position, -car.transform.up, out RaycastHit hit, maxLength + radius))
+        if (Physics.Raycast(transform.position, -car.transform.up, out RaycastHit hit, maxLength + radius))
         {
             isOnGround = true;
             wheelVelocityLS = transform.InverseTransformDirection(rb.GetPointVelocity(hit.point)); //Velocity of hit point
-            Fx = (Input.GetAxisRaw("Accel") - Input.GetAxisRaw("Decel")) * car.speedMult;
+            Fx = Input.GetAxis("Vertical") * car.speedMult;
+            //(Input.GetAxisRaw("Accel") - Input.GetAxisRaw("Decel"))
             Fy = wheelVelocityLS.x * springForce;
 
-            visualWheel.position = new(hit.point.x, hit.point.y + radius, hit.point.z);
-
+            //visualWheel.position = new Vector3(hit.point.x, hit.point.y + radius * transform.up.y, hit.point.z);
+            visualWheel.position = new Vector3(transform.position.x, transform.position.y, transform.position.z) -(springLength*car.transform.up);
 
             if (car.willDoSuspension)
             {

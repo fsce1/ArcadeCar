@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if(!car.willDoSuspension)
+        if(!car.willDoSuspension && car.transform.up.y <0)
         {
             flipText.gameObject.SetActive(true);
             if (Input.GetKeyDown(KeyCode.R))
