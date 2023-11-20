@@ -9,30 +9,44 @@ public class Headlights : MonoBehaviour
     public float closedRot;
     public float openRot;
     public Light[] lights;
-    void Update()
+    public Vector3 start;
+    public Vector3 tgt;
+    private void Start()
+    {
+        start = transform.localEulerAngles;
+    }
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.H))
         {
             isOpen = !isOpen;
+            start = tgt;
         }
-        Vector3 tgt;
-        Vector3 cur;
+    }
+    void FixedUpdate()
+    {
         if (isOpen)
         {
             tgt = new(closedRot, 0, 0);
-            cur = new(openRot, 0, 0);
-            //for (int i = 0; i < lights.Length; i++) lights[i].enabled = true;
+            foreach (Light l in lights) l.enabled = false;
         }
         else
         {
             tgt = new(openRot, 0, 0);
-            cur = new(closedRot, 0, 0);
-            //for (int i = 0; i < lights.Length; i++) lights[i].enabled = false;
+            foreach (Light l in lights) l.enabled = true;
         }
-        for (float i = 0; i <= 100; i++)
+
+        if (transform.localEulerAngles == tgt)
         {
-            i /= 100;
-            transform.localEulerAngles = Vector3.Lerp(cur, tgt, i);
+            transform.localEulerAngles += Move(start, tgt, 1);
         }
     }
+    private Vector3 Move(Vector3 start, Vector3 tgt, float secs)
+    {
+        Vector3 diff = tgt - start;
+        Vector3 move = diff * (secs / 50);
+        return move;
+    }
+
+
 }
